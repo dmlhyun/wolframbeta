@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Form, Input, Label } from 'semantic-ui-react';
+import { Header, Container, Form, Input, Label } from 'semantic-ui-react';
 import { validateExpression, simplifyExpression } from '../common/utilities';
 
 class UserInput extends Component {
@@ -17,11 +17,11 @@ class UserInput extends Component {
         this.setState({
           error: true
         });
+      } else {
+        this.setState({
+          result: simplifyExpression(expression)
+        });
       }
-      simplifyExpression();
-      // take expression and validate
-      // -> if true set simplified result
-      // -> if false send error
   }
   handleChange(e, data) {
     e.preventDefault();
@@ -32,6 +32,7 @@ class UserInput extends Component {
   }
   render() {
     console.log(this.state)
+    const { error, result } = this.state
     return (
       <Container>
         <Form onSubmit={() => this.handleSubmit()}>
@@ -40,10 +41,16 @@ class UserInput extends Component {
             value={this.state.expression}
             onChange={(e, data) => this.handleChange(e, data)}
           />
-          {this.state.error &&
+          {error &&
             <Label pointing color='red'>Invalid expression</Label>
           }
         </Form>
+        {result &&
+          <div>
+            <Header as='h2'>Result</Header>
+            <p>{this.state.result}</p>
+          </div>
+        }
       </Container>
     );
   }
