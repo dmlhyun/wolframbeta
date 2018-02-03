@@ -13,7 +13,7 @@ class UserInput extends Component {
   }
   handleSubmit() {
     const { expression } = this.state;
-      if (!expression || validateExpression(expression)) {
+      if (!expression || !validateExpression(expression)) {
         this.setState({
           error: true
         });

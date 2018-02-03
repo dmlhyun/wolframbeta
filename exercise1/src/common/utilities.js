@@ -45,8 +45,24 @@ export const simplifyExpression = (exp) => {
   return vals[0];
 };
 
+const balancedBrackets = (str) => {
+  const stack = [];
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === '(') {
+      stack.push(str[i]);
+    } else if (str[i] === ')') {
+      if (stack.length < 1) {
+        return false;
+      } else {
+        stack.pop();
+      }
+    }
+  }
+  return !stack.length;
+}
+
 export const validateExpression = (str) => {
   const regex = /[^A-Ca-c0-1()^+.~]/g; // Checks if str has any char besides these
-  const res = regex.test(str);
-  return res;
+  const res = !regex.test(str);
+  return res && balancedBrackets(str);
 };
