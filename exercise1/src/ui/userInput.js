@@ -26,7 +26,7 @@ class UserInput extends Component {
   handleChange(e, data) {
     e.preventDefault();
     this.setState({
-      expression: data.value,
+      expression: data.value.toUpperCase(),
       error: false
     })
   }

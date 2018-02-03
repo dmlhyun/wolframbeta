@@ -17,20 +17,20 @@ export const simplifyExpression = (exp) => {
       let val1 = vals.pop();
       let val2 = vals.pop();
       let sorted = [val1, val2].sort();
-      if (sorted[0] == sorted[1]) {
+      if (sorted[0] === sorted[1]) {
         vals.push(val1);
-      } else if (op == '.') {
-        if (sorted[0] == '0') {
+      } else if (op === '.') {
+        if (sorted[0] === '0') {
           vals.push(sorted[0]);
-        } else if (sorted[0] == '1') {
+        } else if (sorted[0] === '1') {
           vals.push(sorted[1]);
         } else {
           vals.push(`(${val1} ${op} ${val2})`);
         }
-      } else if (op == '+') {
-        if (sorted[0] == '0') {
+      } else if (op === '+') {
+        if (sorted[0] === '0') {
           vals.push(sorted[1]);
-        } else if (sorted[0] == '1') {
+        } else if (sorted[0] === '1') {
           vals.push(sorted[0]);
         } else {
           vals.push(`(${val1} ${op} ${val2})`);        }
