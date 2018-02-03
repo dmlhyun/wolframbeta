@@ -41,7 +41,7 @@ class UserInput extends Component {
             value={this.state.expression}
             onChange={(e, data) => this.handleChange(e, data)}
           />
-          {this.state.error &&
+          {error &&
             <Label pointing color='red'>Invalid expression</Label>
           }
         </Form>
