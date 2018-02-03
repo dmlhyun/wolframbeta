@@ -1,5 +1,5 @@
 // only works for 5 cases so far
-const simplifyExpression = (exp) => {
+export const simplifyExpression = (exp) => {
   let ops = [];
   let vals = [];
 
@@ -40,14 +40,3 @@ const simplifyExpression = (exp) => {
   }
   return vals[0];
 };
-
-//testing
-console.log(simplifyExpression('(A+0)'));
-console.log(simplifyExpression('(A+1)'));
-console.log(simplifyExpression('(A.0)'));
-console.log(simplifyExpression('(A.1)'));
-console.log(simplifyExpression('(A.A)'));
-console.log(simplifyExpression('(A+A)'));
-console.log(simplifyExpression('((A+A)+0)'));
-console.log(simplifyExpression('((A+A)+1)'));
-console.log(simplifyExpression('(A+(((A+A)+A)+A)+A))'));

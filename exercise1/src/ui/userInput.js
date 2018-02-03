@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Form, Input, Label } from 'semantic-ui-react';
-import { simplifyExpression } from '../common/utilities';
+import { validateExpression, simplifyExpression } from '../common/utilities';
 
 class UserInput extends Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class UserInput extends Component {
     };
   }
   handleSubmit() {
-      if (!this.state.expression) {
+    const { expression } = this.state;
+      if (!expression || validateExpression(expression)) {
         this.setState({
           error: true
         });
