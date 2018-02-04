@@ -43,6 +43,8 @@ class UserInput extends Component {
           {error &&
             <Label pointing color='red'>Invalid expression</Label>
           }
+          <p>Currently only can take A, B, C, 1, 0</p>
+          <p>Currently only has functionality for + and .</p>
         </Form>
         {result &&
           <div>
