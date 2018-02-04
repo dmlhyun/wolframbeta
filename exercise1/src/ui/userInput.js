@@ -31,7 +31,6 @@ class UserInput extends Component {
     })
   }
   render() {
-    console.log(this.state)
     const { error, result } = this.state
     return (
       <Container>

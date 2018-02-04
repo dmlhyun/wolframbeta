@@ -61,8 +61,24 @@ const balancedBrackets = (str) => {
   return !stack.length;
 }
 
+const validateOperators = (str) => {
+  const operators = ['+', '.'];
+  const operands = ['A', 'B', 'C', '1', '0'];
+  for (let i = 0; i < str.length; i++) {
+    if (operators.includes(str[i])) {
+      if (operands.includes(str[i-1]) && operands.includes(str[i+1])) {
+        continue;
+      }
+      return false;
+    }
+  }
+  return true;
+}
+
 export const validateExpression = (str) => {
   const regex = /[^A-Ca-c0-1()^+.~]/g; // Checks if str has any char besides these
   const res = !regex.test(str);
-  return res && balancedBrackets(str);
+  console.log('valid operators', validateOperators(str));
+  const valid = res && balancedBrackets(str) && validateOperators(str);
+  return valid;
 };
