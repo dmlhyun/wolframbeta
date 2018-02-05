@@ -1,10 +1,11 @@
 // only works for 5 cases so far
-export const simplifyExpression = (exp) => {
+export const simplifyExpression = (expression) => {
   let ops = [];
   let vals = [];
 
+  let exp = expression;
   if (exp[0] !== '(' && exp[exp.length-1] !== ')') {
-    exp = '(' + exp + ')';
+    exp = '(' + expression + ')';
   }
 
   for (let i = 0; i < exp.length; i++) {
@@ -25,7 +26,7 @@ export const simplifyExpression = (exp) => {
         } else if (sorted[0] === '1') {
           vals.push(sorted[1]);
         } else {
-          vals.push(`(${val1} ${op} ${val2})`);
+          return expression;
         }
       } else if (op === '+') {
         if (sorted[0] === '0') {
@@ -33,11 +34,11 @@ export const simplifyExpression = (exp) => {
         } else if (sorted[0] === '1') {
           vals.push(sorted[0]);
         } else {
-          vals.push(`(${val1} ${op} ${val2})`);        }
+          return expression;
+        }
       } else {
-        vals.push(`(${val1} ${op} ${val2})`);;
+        return expression;
       }
-
     } else {
       vals.push(exp[i])
     }
