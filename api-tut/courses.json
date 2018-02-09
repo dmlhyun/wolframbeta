@@ -1,0 +1,8 @@
+{
+  "syde322": {
+    "name":"Software Design",
+    "description":"Software requirements specification; software architecture; design patterns; software testing and quality assurance; software maintenance; design of efficient algorithms and methods for their analysis, mathematical algorithms, string processing algorithms, geometrical algorithms, exhaustive search and traversal techniques, introduction to lower bound theory and NP-completeness. Case studies and engineering examples.",
+    "prereq":"CS 240 or ECE 250 or MTE 140 or SYDE 223 or Level at least 3B Systems Design Engineering.",
+    "antireq":""
+  }
+}
