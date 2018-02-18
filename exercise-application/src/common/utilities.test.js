@@ -1,0 +1,10 @@
+//testing
+console.log(simplifyExpression('(A+0)'));
+console.log(simplifyExpression('(A+1)'));
+console.log(simplifyExpression('(A.0)'));
+console.log(simplifyExpression('(A.1)'));
+console.log(simplifyExpression('(A.A)'));
+console.log(simplifyExpression('(A+A)'));
+console.log(simplifyExpression('((A+A)+0)'));
+console.log(simplifyExpression('((A+A)+1)'));
+console.log(simplifyExpression('(A+(((A+A)+A)+A)+A))'));
