@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Header, Container, Form, Input, Label } from 'semantic-ui-react';
-import { validateExpression, simplifyExpression } from '../common/utilities';
+import { validateExpression } from '../common/utilities';
+import axios from 'axios';
+import Result from './results';
 
 class UserInput extends Component {
   constructor(props) {
@@ -8,9 +10,11 @@ class UserInput extends Component {
     this.state = {
       expression: '',
       result: null,
-      error: false
+      error: false,
+      errorMessage: null
     };
   }
+
   handleSubmit() {
     const { expression } = this.state;
       if (!expression || !validateExpression(expression)) {
@@ -18,11 +22,25 @@ class UserInput extends Component {
           error: true
         });
       } else {
-        this.setState({
-          result: simplifyExpression(expression)
+        axios.post('/results', {
+          expression
+        })
+        .then((response) => {
+          console.log(response);
+          this.setState({
+            result: response.data
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            error: true,
+            errorMessage: error
+          });
         });
       }
   }
+
   handleChange(e, data) {
     e.preventDefault();
     this.setState({
@@ -30,10 +48,12 @@ class UserInput extends Component {
       error: false
     })
   }
+
   render() {
     const { error, result } = this.state
     return (
       <Container>
+        <Header as='h1'>WolframBeta</Header>
         <Form onSubmit={() => this.handleSubmit()}>
           <Input
             fluid
@@ -47,10 +67,7 @@ class UserInput extends Component {
           <p>Currently only has functionality for + and .</p>
         </Form>
         {result &&
-          <div>
-            <Header as='h2'>Result</Header>
-            <p>{this.state.result}</p>
-          </div>
+          <Result result={result} />
         }
       </Container>
     );

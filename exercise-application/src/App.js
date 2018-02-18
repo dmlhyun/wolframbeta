@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import './App.css';
-import { Header } from 'semantic-ui-react';
-import UserInput from './ui/userInput';
+import Home from './ui/userInput';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header as='h1'>WolframBeta</Header>
-        <UserInput />
-      </div>
+      <Router>
+        <div>
+          <Route exact path="/" component={Home} />
+        </div>
+      </Router>
     );
   }
 }
