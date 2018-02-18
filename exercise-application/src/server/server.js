@@ -2,11 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
-// import { simplifyExpression } from '../common/utilities';
 
 app.use(bodyParser.json());
 
-// POST request for courses path
+// POST request for results path
 app.post('/results', (req, res) => {
   console.log('POST request received');
   fs.readFile(__dirname + "/" + "results.json", 'utf8', function (err, data) { // using function construct
@@ -17,7 +16,7 @@ app.post('/results', (req, res) => {
     try {
       const results = JSON.parse(data);
       const expr = req.body.expression;
-      res.end(results[expr]);
+      res.send(results[expr]);
     } catch (err) {
       res.status(400).json({ error: "Invalid service request" });
       console.error("Invalid service request");
