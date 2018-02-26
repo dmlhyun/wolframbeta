@@ -29,4 +29,4 @@ console.log(utilities.expand('X', 'Y+Z'));
 console.log(utilities.expand('X+Y', 'X+Z'));
 
 console.log('test simplifyExpression');
-console.log(utilities.expand('X+Y', 'X+Z'));
+console.log(utilities.simplifyExpression('X+Y'));
