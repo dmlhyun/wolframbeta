@@ -8,7 +8,7 @@ const utilities = require('../common/utilities.js');
 app.use(bodyParser.json());
 
 // POST request for results path
-app.post('/api/results', (req, res) => {
+app.post('/api/simplified/results', (req, res) => {
   console.log('POST request received');
   fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
     if (err && err.code == "ENOENT") { // anonymous callback function
@@ -38,6 +38,20 @@ app.post('/api/results', (req, res) => {
       return;
     }
   });
+});
+
+// POST request for results path
+app.post('/api/simplified/expand', (req, res) => {
+  console.log('POST request received');
+  try {
+    const expr = req.body.expression;
+    expanded = utilities.expand(expr);
+    res.send(expanded);
+  } catch (err) {
+    res.status(400).json({ error: "Invalid service request" });
+    console.error("Invalid service request");
+    return;
+  }
 });
 
 const server = app.listen((process.env.PORT || 8080), () => {

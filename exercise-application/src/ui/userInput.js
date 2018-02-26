@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Container, Form, Input, Label } from 'semantic-ui-react';
+import { Header, Container, Form, Input, Label, Button } from 'semantic-ui-react';
 import { validateExpression } from '../common/utilities';
 import axios from 'axios';
 import Result from './results';
@@ -11,33 +11,51 @@ class UserInput extends Component {
       expression: '',
       result: null,
       error: false,
-      errorMessage: null
+      errorMessage: null,
+      expandActive: false,
+      expandedResult: null
     };
   }
 
   handleSubmit() {
-    const { expression } = this.state;
+    const { expression, expandActive } = this.state;
       if (!expression || !validateExpression(expression)) {
         this.setState({
           error: true
         });
       } else {
-        axios.post('/api/results', {
+        axios.post('/api/simplified/results', {
           expression
         })
         .then((response) => {
-          console.log(response);
           this.setState({
             result: response.data
           });
         })
         .catch((error) => {
-          console.log(error);
           this.setState({
             error: true,
             errorMessage: error
           });
         });
+        if (expandActive) {
+          axios.post('/api/simplified/expand', {
+            expression
+          })
+          .then((response) => {
+            console.log(response);
+            this.setState({
+              expandedResult: response.data
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            this.setState({
+              error: true,
+              errorMessage: error
+            });
+          });
+        }
       }
   }
 
@@ -49,8 +67,15 @@ class UserInput extends Component {
     })
   }
 
+  handleToggle(e, id) {
+    e.preventDefault();
+    this.setState({
+      [`${id}Active`]: !this.state[`${id}Active`]
+    });
+  }
+
   render() {
-    const { error, result } = this.state
+    const { error, result, expandActive } = this.state
     return (
       <Container>
         <Header as='h1'>WolframBeta</Header>
@@ -63,9 +88,19 @@ class UserInput extends Component {
           {error &&
             <Label pointing color='red'>Invalid expression</Label>
           }
-          <p>Currently only can take A, B, C, 1, 0</p>
+          <p>Currently only can take X, Y, Z, 1, 0</p>
           <p>Currently only has functionality for + and .</p>
         </Form>
+        <Button.Group basic>
+          <Button
+            toggle
+            active={expandActive}
+            id="expand"
+            onClick={(e, props) => this.handleToggle(e, props.id)}
+          >
+            Expand
+          </Button>
+        </Button.Group>
         {result &&
           <Result result={result} />
         }
