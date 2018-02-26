@@ -3,12 +3,14 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
 
+const utilities = require('../common/utilities.js');
+
 app.use(bodyParser.json());
 
 // POST request for results path
 app.post('/results', (req, res) => {
   console.log('POST request received');
-  fs.readFile(__dirname + "/" + "results.json", 'utf8', function (err, data) { // using function construct
+  fs.readFile(__dirname + "/" + "results.json", 'utf8', function (err, data) {
     if (err && err.code == "ENOENT") { // anonymous callback function
       console.error("Invalid filename provided");
       return;
@@ -16,7 +18,13 @@ app.post('/results', (req, res) => {
     try {
       const results = JSON.parse(data);
       const expr = req.body.expression;
-      res.send(results[expr]);
+      let simplified_result = '';
+      if (results[expr]) {
+        simplified_result = results[expr];
+      } else {
+        simplified_result = utilities.simplifyExpression(expr);
+      }
+      res.send(final_result);
     } catch (err) {
       res.status(400).json({ error: "Invalid service request" });
       console.error("Invalid service request");
