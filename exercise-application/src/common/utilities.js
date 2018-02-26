@@ -4,8 +4,10 @@ const {simplifyExpression, expand, qmc} =
 const findPrimeImplicants = require('./utilities/findPrimeImplicants.js');
 
 // most exported for testing purposes
-module.exports = { simplifyExpression,
-                   validateExpression,
-                   findPrimeImplicants,
-                   expand,
-                   qmc };
+module.exports = {
+  simplifyExpression,
+  validateExpression,
+  findPrimeImplicants,
+  expand,
+  qmc
+};

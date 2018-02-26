@@ -8,9 +8,9 @@ const utilities = require('../common/utilities.js');
 app.use(bodyParser.json());
 
 // POST request for results path
-app.post('/results', (req, res) => {
+app.post('/api/results', (req, res) => {
   console.log('POST request received');
-  fs.readFile(__dirname + "/" + "results.json", 'utf8', function (err, data) {
+  fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
     if (err && err.code == "ENOENT") { // anonymous callback function
       console.error("Invalid filename provided");
       return;
@@ -18,13 +18,20 @@ app.post('/results', (req, res) => {
     try {
       const results = JSON.parse(data);
       const expr = req.body.expression;
-      let simplified_result = '';
+      let simplified_result;
       if (results[expr]) {
+        console.log('Result exists')
         simplified_result = results[expr];
       } else {
+        console.log('Result does not exist')
         simplified_result = utilities.simplifyExpression(expr);
+        results[expr] = simplified_result; // Create the key and assign the expr to simplified result
+        fs.writeFile(__dirname + "/" + "results.json", JSON.stringify(results), 'utf8', (err) => {
+          if (err) throw err;
+          console.log('Saved new result');
+        }); // Writes new key value pair into our JSON 'database'
       }
-      res.send(final_result);
+      res.send(simplified_result);
     } catch (err) {
       res.status(400).json({ error: "Invalid service request" });
       console.error("Invalid service request");

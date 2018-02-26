@@ -9,7 +9,7 @@ const simplifyExpression = (exp) => {
   let final_exp = '';
 
   for (let i = 0; i < exp.length; i++) {
-    if (exp[i] === "(" && i != 0 && exp[i-1] != '+' && exp[i-1] != ')') {
+    if (exp[i] === "(" && i !== 0 && exp[i-1] !== '+' && exp[i-1] !== ')') {
       vals.push(inner_exp);
       inner_exp = '';
       ops.push('.');
@@ -19,9 +19,9 @@ const simplifyExpression = (exp) => {
       ops.push(exp[i]);
     } else if (exp[i] === ")") {
       let op = ops.pop();
-      if (op == '.') {
-        let exp1 = vals.pop();
-        let exp2 = vals.pop();
+      let exp1 = vals.pop();
+      let exp2 = vals.pop();
+      if (op === '.') {
         vals.push(expand(exp1, exp2));
       } else {
         vals.push(`${exp1}+${exp2}`);
@@ -55,9 +55,9 @@ const qmc = (exp) => {
     let str = '';
 
     operands.forEach((op) => {
-      if(placeholder_dict[op] && simplified[counter] == '1') {
+      if(placeholder_dict[op] && simplified[counter] === '1') {
         str = str + op;
-      } else if (placeholder_dict[op] && simplified[counter] == '0') {
+      } else if (placeholder_dict[op] && simplified[counter] === '0') {
         str = str + `~${op}`;
       }
     });
@@ -70,7 +70,7 @@ const qmc = (exp) => {
     let binary_str = '';
 
     for (let i = 0; i < term.length; i++) {
-      if (term[i] == '~') {
+      if (term[i] === '~') {
         negate = !negate;
       } else if (!placeholder_dict[term[i]]) {
         if (negate) {

@@ -22,7 +22,7 @@ class UserInput extends Component {
           error: true
         });
       } else {
-        axios.post('/results', {
+        axios.post('/api/results', {
           expression
         })
         .then((response) => {
@@ -44,7 +44,7 @@ class UserInput extends Component {
   handleChange(e, data) {
     e.preventDefault();
     this.setState({
-      expression: data.value.toUpperCase(),
+      expression: data.value.toUpperCase().replace(/ /g, ''),
       error: false
     })
   }
