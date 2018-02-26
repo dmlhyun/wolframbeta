@@ -1,12 +1,10 @@
 const findPrimeImplicants = require('./findPrimeImplicants.js');
-const operators = ['+', '.'];
 const operands = ['X', 'Y', 'Z', '1', '0', '~'];
 
 const simplifyExpression = (exp) => {
   let ops = [];
   let vals = [];
   let inner_exp = '';
-  let final_exp = '';
 
   for (let i = 0; i < exp.length; i++) {
     if (exp[i] === "(" && i !== 0 && exp[i-1] !== '+' && exp[i-1] !== ')') {
