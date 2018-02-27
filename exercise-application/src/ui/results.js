@@ -18,6 +18,7 @@ class Result extends Component {
 
   render() {
     const { result, title } = this.state
+    console.log(this.state);
     return (
       <Segment vertical>
         <Header as='h2'>{title}</Header>

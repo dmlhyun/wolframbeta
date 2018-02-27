@@ -40,7 +40,7 @@ app.post('/api/simplified/results', (req, res) => {
   });
 });
 
-// POST request for results path
+// POST request for expand path
 app.post('/api/simplified/expand', (req, res) => {
   console.log('Expand POST request received');
   try {
@@ -54,8 +54,9 @@ app.post('/api/simplified/expand', (req, res) => {
   }
 });
 
+// POST Request for QMC path
 app.post('/api/simplified/qmc', (req, res) => {
-  console.log('POST request received');
+  console.log('QMC POST request received');
   try {
     const expr = req.body.expression;
     simplified = utilities.qmc(expr);
@@ -65,6 +66,25 @@ app.post('/api/simplified/qmc', (req, res) => {
     console.error("Invalid service request");
     return;
   }
+});
+
+// GET request for store path
+app.get('/api/store', (req, res) => {
+  console.log('Results GET request received');
+  fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
+    if (err && err.code == "ENOENT") { // anonymous callback function
+      console.error("Invalid filename provided");
+      return;
+    }
+    try {
+      const results = JSON.parse(data);
+      res.send(results);
+    } catch (err) {
+      res.status(400).json({ error: "Invalid service request" });
+      console.error("Invalid service request");
+      return;
+    }
+  });
 });
 
 const server = app.listen((process.env.PORT || 8080), () => {

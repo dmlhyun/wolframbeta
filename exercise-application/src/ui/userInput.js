@@ -13,12 +13,14 @@ class UserInput extends Component {
       error: false,
       errorMessage: null,
       expandActive: false,
-      expandResult: null
+      expandResult: null,
+      storeActive: false,
+      storeResult: null
     };
   }
 
   handleSubmit() {
-    const { expression, expandActive } = this.state;
+    const { expression, expandActive, storeActive } = this.state;
       if (!expression || !validateExpression(expression)) {
         this.setState({
           error: true
@@ -54,6 +56,17 @@ class UserInput extends Component {
             });
           });
         }
+        if (storeActive) {
+          axios.get('/api/store')
+            .then((res) => {
+              this.setState({
+                storeResult: res.data
+              });
+            })
+            .catch((err) => {
+              console.log('Failed to GET');
+            });
+        }
       }
   }
 
@@ -78,8 +91,11 @@ class UserInput extends Component {
       error,
       result,
       expandActive,
-      expandResult
+      expandResult,
+      storeActive,
+      storeResult
     } = this.state
+    console.log(this.state);
     return (
       <Container>
         <Header as='h1' textAlign='center'>
@@ -99,10 +115,18 @@ class UserInput extends Component {
                 active={expandActive}
                 id="expand"
                 onClick={(e, props) => this.handleToggle(e, props.id)}
-                >
-                  Expand
-                </Button>
-              </Button.Group>
+              >
+                Expand
+              </Button>
+              <Button
+                toggle
+                active={storeActive}
+                id="store"
+                onClick={(e, props) => this.handleToggle(e, props.id)}
+              >
+                Store
+              </Button>
+            </Button.Group>
             <p>Currently only can take X, Y, Z, 1, 0</p>
           </Form>
           <Message negative hidden={!error}>
@@ -115,6 +139,9 @@ class UserInput extends Component {
           }
           {expandActive && expandResult &&
             <Result result={expandResult} title="Expanded Form" />
+          }
+          {storeActive && storeResult &&
+            <Result result={JSON.stringify(storeResult)} title="Known Results" />
           }
         </div>
       </Container>
