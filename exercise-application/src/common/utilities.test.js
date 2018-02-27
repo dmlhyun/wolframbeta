@@ -24,9 +24,14 @@ console.log('test qmc');
 console.log(utilities.qmc('XYZ+XYZ'));
 console.log(utilities.qmc('XX'));
 
+console.log('test expandTwoExps');
+console.log(utilities.expandTwoExps('X', 'Y+Z'));
+console.log(utilities.expandTwoExps('X+Y', 'X+Z'));
+
 console.log('test expand');
-console.log(utilities.expand('X', 'Y+Z'));
-console.log(utilities.expand('X+Y', 'X+Z'));
+console.log(utilities.expand('X(Y+Z)'));
+console.log(utilities.expand('(X+Y)(X+Z)'));
+console.log(utilities.expand('(XZ+YZ)(X+Z)'));
 
 console.log('test simplifyExpression');
 console.log(utilities.simplifyExpression('X+Y'));

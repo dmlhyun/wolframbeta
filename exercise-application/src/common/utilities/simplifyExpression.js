@@ -2,25 +2,42 @@ const findPrimeImplicants = require('./findPrimeImplicants.js');
 const operands = ['X', 'Y', 'Z', '1', '0', '~'];
 
 const simplifyExpression = (exp) => {
+  let expandedExp = expand(exp);
+  return qmc(expandedExp);
+}
+
+const expand = (exp) => {
   let ops = [];
   let vals = [];
   let inner_exp = '';
 
+  exp = `(${exp})`;
+
   for (let i = 0; i < exp.length; i++) {
     if (exp[i] === "(" && i !== 0 && exp[i-1] !== '+' && exp[i-1] !== ')') {
-      vals.push(inner_exp);
-      inner_exp = '';
+      if (inner_exp != '') {
+        vals.push(inner_exp);
+        inner_exp = '';
+      }
       ops.push('.');
-    } else if (exp[i] === "+" || exp[i] === ".") {
-      vals.push(inner_exp);
-      inner_exp = '';
+    } else if (exp[i] === "(" ) {
+      // do nothing
+    } else if (exp[i] === "." || exp[i] === '+') {
+      if (inner_exp != '') {
+        vals.push(inner_exp);
+        inner_exp = '';
+      }
       ops.push(exp[i]);
     } else if (exp[i] === ")") {
+      if (inner_exp != '') {
+        vals.push(inner_exp);
+        inner_exp = '';
+      }
       let op = ops.pop();
       let exp1 = vals.pop();
       let exp2 = vals.pop();
       if (op === '.') {
-        vals.push(expand(exp1, exp2));
+        vals.push(expandTwoExps(exp1, exp2));
       } else {
         vals.push(`${exp1}+${exp2}`);
       }
@@ -28,10 +45,11 @@ const simplifyExpression = (exp) => {
       inner_exp = inner_exp + exp[i];
     }
   }
-  return qmc(vals[0]);
+
+  return vals[0];
 }
 
-const expand = (exp1, exp2) => {
+const expandTwoExps = (exp1, exp2) => {
   let exp1Arr = exp1.split('+');
   let exp2Arr = exp2.split('+');
 
@@ -98,4 +116,4 @@ const qmc = (exp) => {
   return simplified_exp;
 }
 
-module.exports = {simplifyExpression, expand, qmc}
+module.exports = {simplifyExpression, expand, expandTwoExps, qmc}

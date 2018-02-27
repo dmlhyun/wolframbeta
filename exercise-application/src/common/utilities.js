@@ -1,5 +1,5 @@
 const validateExpression = require('./utilities/validateExpression.js');
-const {simplifyExpression, expand, qmc} =
+const {simplifyExpression, expand, expandTwoExps, qmc} =
   require('./utilities/simplifyExpression.js');
 const findPrimeImplicants = require('./utilities/findPrimeImplicants.js');
 
@@ -9,5 +9,6 @@ module.exports = {
   validateExpression,
   findPrimeImplicants,
   expand,
+  expandTwoExps,
   qmc
 };
