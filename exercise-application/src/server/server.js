@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // POST request for results path
 app.post('/api/simplified/results', (req, res) => {
-  console.log('POST request received');
+  console.log('Results POST request received');
   fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
     if (err && err.code == "ENOENT") { // anonymous callback function
       console.error("Invalid filename provided");
@@ -42,7 +42,7 @@ app.post('/api/simplified/results', (req, res) => {
 
 // POST request for results path
 app.post('/api/simplified/expand', (req, res) => {
-  console.log('POST request received');
+  console.log('Expand POST request received');
   try {
     const expr = req.body.expression;
     expanded = utilities.expand(expr);

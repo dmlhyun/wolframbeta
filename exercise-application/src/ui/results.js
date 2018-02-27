@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Header, Container } from 'semantic-ui-react';
+import { Header, Segment } from 'semantic-ui-react';
 
 class Result extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: props.result
+      result: props.result,
+      title: props.title
     };
   }
 
@@ -16,12 +17,12 @@ class Result extends Component {
   }
 
   render() {
-    const { result } = this.state
+    const { result, title } = this.state
     return (
-      <Container>
-        <Header as='h1'>Result</Header>
+      <Segment vertical>
+        <Header as='h2'>{title}</Header>
         <p>{result}</p>
-      </Container>
+      </Segment>
     );
   }
 }

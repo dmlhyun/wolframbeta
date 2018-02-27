@@ -13,7 +13,7 @@ class UserInput extends Component {
       error: false,
       errorMessage: null,
       expandActive: false,
-      expandedResult: null
+      expandResult: null
     };
   }
 
@@ -43,13 +43,11 @@ class UserInput extends Component {
             expression
           })
           .then((response) => {
-            console.log(response);
             this.setState({
-              expandedResult: response.data
+              expandResult: response.data
             });
           })
           .catch((error) => {
-            console.log(error);
             this.setState({
               error: true,
               errorMessage: error
@@ -70,20 +68,29 @@ class UserInput extends Component {
   handleToggle(e, id) {
     e.preventDefault();
     this.setState({
-      [`${id}Active`]: !this.state[`${id}Active`]
+      [`${id}Active`]: !this.state[`${id}Active`],
+      [`${id}Result`]: null
     });
   }
 
   render() {
-    const { error, result, expandActive } = this.state
+    const {
+      error,
+      result,
+      expandActive,
+      expandResult
+    } = this.state
     return (
       <Container>
-        <Header as='h1'>WolframBeta</Header>
+        <Header as='h1' textAlign='center'>
+          WolframBeta
+        </Header>
         <Form onSubmit={() => this.handleSubmit()}>
           <Input
             fluid
             value={this.state.expression}
             onChange={(e, data) => this.handleChange(e, data)}
+            action='Submit' placeholder='Submit'
           />
           {error &&
             <Label pointing color='red'>Invalid expression</Label>
@@ -101,9 +108,14 @@ class UserInput extends Component {
             Expand
           </Button>
         </Button.Group>
-        {result &&
-          <Result result={result} />
-        }
+        <div>
+          {result &&
+            <Result result={result} title="Result" />
+          }
+          {expandActive && expandResult &&
+            <Result result={expandResult} title="Expanded Form" />
+          }
+        </div>
       </Container>
     );
   }
