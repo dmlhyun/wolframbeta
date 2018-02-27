@@ -54,6 +54,19 @@ app.post('/api/simplified/expand', (req, res) => {
   }
 });
 
+app.post('/api/simplified/qmc', (req, res) => {
+  console.log('POST request received');
+  try {
+    const expr = req.body.expression;
+    simplified = utilities.qmc(expr);
+    res.send(simplified);
+  } catch (err) {
+    res.status(400).json({ error: "Invalid service request" });
+    console.error("Invalid service request");
+    return;
+  }
+});
+
 const server = app.listen((process.env.PORT || 8080), () => {
   const port = server.address().port;
   console.log('Node.js server running at localhost:', port);
