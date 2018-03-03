@@ -28,8 +28,8 @@ const expand = (exp) => {
         inner_exp = '';
       }
       ops.push(exp[i]);
-    } else if (inner_exp != undefined && exp[i] === ")") {
-      if (inner_exp != '') {
+    } else if (exp[i] === ")") {
+      if (inner_exp != undefined && inner_exp != '') {
         vals.push(inner_exp);
         inner_exp = '';
       }
