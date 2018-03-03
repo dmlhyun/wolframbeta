@@ -15,7 +15,7 @@ const expand = (exp) => {
 
   for (let i = 0; i < exp.length; i++) {
     if (exp[i] === "(" && i !== 0 && exp[i-1] !== '+' && exp[i-1] !== ')') {
-      if (inner_exp != '') {
+      if (inner_exp != undefined && inner_exp != '') {
         vals.push(inner_exp);
         inner_exp = '';
       }
@@ -23,12 +23,12 @@ const expand = (exp) => {
     } else if (exp[i] === "(" ) {
       // do nothing
     } else if (exp[i] === "." || exp[i] === '+') {
-      if (inner_exp != '') {
+      if (inner_exp != undefined && inner_exp != '') {
         vals.push(inner_exp);
         inner_exp = '';
       }
       ops.push(exp[i]);
-    } else if (exp[i] === ")") {
+    } else if (inner_exp != undefined && exp[i] === ")") {
       if (inner_exp != '') {
         vals.push(inner_exp);
         inner_exp = '';
