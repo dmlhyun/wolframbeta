@@ -128,6 +128,7 @@ class UserInput extends Component {
               </Button>
             </Button.Group>
             <p>Currently only can take X, Y, Z, 1, 0</p>
+            <p>Can not handle expression with extra brackets</p>
           </Form>
           <Message negative hidden={!error}>
             Invalid expression.
