@@ -7,7 +7,7 @@ var wolframbeta_db_config =
     user: db_config.userName,
     password: db_config.password,
     database: db_config.databaseName,
-    port: 3306,
+    port: db_config.port,
     ssl: true
 };
 

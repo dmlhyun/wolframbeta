@@ -1,3 +1,4 @@
+## local setup
 Before you start please run the following:
 ```
 npm i
@@ -12,3 +13,12 @@ npm start
 node server.js
 ```
 The interface should be running on localhost:3000
+
+## database connection
+You will need db_config.json for database connection.
+Once you have received the file, please drop it in exercise_application folder.
+Then run
+```
+node test_database_connection.js
+```
+To make sure that the database connection is working
