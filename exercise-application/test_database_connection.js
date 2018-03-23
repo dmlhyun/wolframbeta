@@ -26,7 +26,7 @@ conn.connect(
     });
 
 function readData(){
-        conn.query('SELECT * FROM profile',
+        conn.query('SELECT * FROM users',
             function (err, results, fields) {
                 if (err) throw err;
                 else console.log('Selected ' + results.length + ' row(s).');

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Container, Form, Input, Message, Button, Segment } from 'semantic-ui-react';
+import { Header, Container, Form, Message, Button, Segment } from 'semantic-ui-react';
 import { validateExpression } from '../common/utilities';
 import axios from 'axios';
 import Result from './results';
