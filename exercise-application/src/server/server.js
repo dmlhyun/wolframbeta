@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
+const {db_conn, Users}= require('./db.connection.js');
 
 const utilities = require('../common/utilities.js');
 
@@ -84,6 +85,13 @@ app.get('/api/store', (req, res) => {
       console.error("Invalid service request");
       return;
     }
+  });
+});
+
+app.get('/api/allusers', (req, res) => {
+  Users.findAll().then(users => {
+    console.log(users);
+    res.send(users);
   });
 });
 
