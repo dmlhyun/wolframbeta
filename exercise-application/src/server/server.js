@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const app = express();
+const {db_conn, Users}= require('./db.connection.js');
 
 const passport = require('passport');  
 const strategy = require('passport-local');
@@ -183,6 +184,13 @@ app.get('/api/:id/store', authenticate, (req, res) => {
       console.error("Invalid service request");
       return;
     }
+  });
+});
+
+app.get('/api/allusers', (req, res) => {
+  Users.findAll().then(users => {
+    console.log(users);
+    res.send(users);
   });
 });
 
