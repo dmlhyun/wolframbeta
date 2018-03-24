@@ -4,6 +4,7 @@ import { validateExpression } from '../common/utilities';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Result from './results';
+import { ROLES } from '../common/constants';
 import UsersTable from './table';
 
 class UserInput extends Component {
@@ -61,7 +62,7 @@ class UserInput extends Component {
       }
   }
 
-  handleAdminButtons(e, id) {
+  handleAdminCalls(e, id) {
     if (id === 'store') {
       axios.get('/api/store')
         .then((res) => {
@@ -126,7 +127,7 @@ class UserInput extends Component {
               action='Submit' placeholder='Submit'
             />
             <Button.Group basic>
-              {(this.props.user.role === 0 || this.props.user.role === 1) &&
+              {(this.props.user.role === ROLES.admin || this.props.user.role === ROLES.premium) &&
                 <Button
                   toggle
                   active={expandActive}
@@ -144,17 +145,17 @@ class UserInput extends Component {
             Invalid expression.
           </Message>
         </Segment>
-        {this.props.user.role === 0 &&
+        {this.props.user.role === ROLES.admin &&
           <div>
             <Button
               id="store"
-              onClick={(e, props) => this.handleAdminButtons(e, props.id)}
+              onClick={(e, props) => this.handleAdminCalls(e, props.id)}
             >
               Store
             </Button>
             <Button
               id="users"
-              onClick={(e, props) => this.handleAdminButtons(e, props.id)}
+              onClick={(e, props) => this.handleAdminCalls(e, props.id)}
             >
               Users
             </Button>
