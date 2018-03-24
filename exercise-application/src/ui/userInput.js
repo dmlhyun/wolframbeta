@@ -111,7 +111,7 @@ class UserInput extends Component {
       storeResult,
       usersResult
     } = this.state
-    console.log(this.state);
+
     return (
       <Container>
         <Header as='h1' textAlign='center'>

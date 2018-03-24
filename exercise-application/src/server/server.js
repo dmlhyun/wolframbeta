@@ -154,7 +154,6 @@ app.get('/api/store', (req, res) => {
 
 app.get('/api/allusers', (req, res) => {
   Users.findAll().then(users => {
-    console.log(users);
     res.send(users);
   });
 });

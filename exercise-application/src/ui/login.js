@@ -21,7 +21,6 @@ class Login extends Component {
       password
     })
     .then((response) => {
-      console.log(response)
       this.props.setUser(response.data)
     })
     .catch((error) => {
@@ -33,7 +32,6 @@ class Login extends Component {
 
   render() {
     const { username, password, error } = this.state
-    console.log(this.state);
     return (
       <Container>
         <Header as='h1' align='center'>Welcome to WolframBeta</Header>

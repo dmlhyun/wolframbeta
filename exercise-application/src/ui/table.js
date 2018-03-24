@@ -17,7 +17,6 @@ class UsersTable extends Component {
   }
 
   render() {
-    console.log('users',this.state.users)
     return (
       <Table>
         <Table.Header>
@@ -33,12 +32,12 @@ class UsersTable extends Component {
          <Table.Body>
           {_.map(this.state.users, ({ userid, role, createdAt, lastlogin, name }) => (
             <Table.Row key={userid}>
-            <Table.Cell>{userid}</Table.Cell>
-            <Table.Cell>{name}</Table.Cell>
-            <Table.Cell>{role}</Table.Cell>
-            <Table.Cell>{createdAt}</Table.Cell>
-            <Table.Cell>{lastlogin}</Table.Cell>
-          </Table.Row>
+              <Table.Cell>{userid}</Table.Cell>
+              <Table.Cell>{name}</Table.Cell>
+              <Table.Cell>{role}</Table.Cell>
+              <Table.Cell>{createdAt}</Table.Cell>
+              <Table.Cell>{lastlogin}</Table.Cell>
+            </Table.Row>
           ))}
         </Table.Body>
       </Table>
