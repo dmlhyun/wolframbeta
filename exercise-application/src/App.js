@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './ui/login';
 import Home from './ui/userInput';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from 'react-redux';
 
 class App extends Component {
@@ -31,7 +31,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    token: state.token
+    user: state.user,
+    token: state.token,
   }
 }
 

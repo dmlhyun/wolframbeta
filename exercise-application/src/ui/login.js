@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Header, Segment, Form, Input, Button, Container, Message } from 'semantic-ui-react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { setToken } from './actions/index';
+import { setUser } from './actions/index';
 
 class Login extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Login extends Component {
     })
     .then((response) => {
       console.log(response)
-      this.props.setToken(response.data.token)
+      this.props.setUser(response.data)
     })
     .catch((error) => {
       this.setState({
@@ -77,4 +77,4 @@ function mapStateToProps(state) {
   return {}
 }
 
-export default connect(mapStateToProps, { setToken })(Login);
+export default connect(mapStateToProps, { setUser })(Login);

@@ -73,7 +73,7 @@ function returnToken(req, res) {
 //=========================================================================================//
 
 // POST request for results path
-app.post('/api/:id/simplified/results', authenticate, (req, res) => {
+app.post('/api/simplified/results', (req, res) => {
   console.log('Results POST request received');
   fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
     if (err && err.code == "ENOENT") { // anonymous callback function
@@ -106,7 +106,7 @@ app.post('/api/:id/simplified/results', authenticate, (req, res) => {
 });
 
 // POST request for expand path
-app.post('/api/:id/simplified/expand', authenticate, (req, res) => {
+app.post('/api/simplified/expand', (req, res) => {
   console.log('Expand POST request received');
   try {
     const expr = req.body.expression;
@@ -120,7 +120,7 @@ app.post('/api/:id/simplified/expand', authenticate, (req, res) => {
 });
 
 // POST Request for QMC path
-app.post('/api/:id/simplified/qmc', authenticate, (req, res) => {
+app.post('/api/simplified/qmc', (req, res) => {
   console.log('QMC POST request received');
   try {
     const expr = req.body.expression;
@@ -134,7 +134,7 @@ app.post('/api/:id/simplified/qmc', authenticate, (req, res) => {
 });
 
 // GET request for store path
-app.get('/api/:id/store', authenticate, (req, res) => {
+app.get('/api/store', (req, res) => {
   console.log('Results GET request received');
   fs.readFile(__dirname + "/" + "results.json", 'utf8', (err, data) => {
     if (err && err.code == "ENOENT") { // anonymous callback function

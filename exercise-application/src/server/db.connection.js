@@ -41,7 +41,8 @@ const Users = sql_conn.define('users', {
   deletedAt: Sequelize.DATE,
   lastlogin: Sequelize.DATE,
   hash: Sequelize.STRING,
-  salt: Sequelize.STRING
+  salt: Sequelize.STRING,
+  role: Sequelize.INTEGER
 }, {
   timestamps: false
 });

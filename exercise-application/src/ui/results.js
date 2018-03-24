@@ -11,7 +11,6 @@ class Result extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps)
     this.setState({
       result: nextProps.result
     });
@@ -19,7 +18,6 @@ class Result extends Component {
 
   render() {
     const { result, title } = this.state
-    console.log(this.state);
     return (
       <Segment vertical>
         <Header as='h2'>{title}</Header>

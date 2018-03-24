@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Header, Container, Form, Message, Button, Segment } from 'semantic-ui-react';
 import { validateExpression } from '../common/utilities';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import Result from './results';
+import UsersTable from './table';
 
 class UserInput extends Component {
   constructor(props) {
@@ -14,13 +16,13 @@ class UserInput extends Component {
       errorMessage: null,
       expandActive: false,
       expandResult: null,
-      storeActive: false,
-      storeResult: null
+      storeResult: null,
+      usersResult: null
     };
   }
 
   handleSubmit() {
-    const { expression, expandActive, storeActive } = this.state;
+    const { expression, expandActive} = this.state;
       if (!expression || !validateExpression(expression)) {
         this.setState({
           error: true
@@ -56,18 +58,32 @@ class UserInput extends Component {
             });
           });
         }
-        if (storeActive) {
-          axios.get('/api/store')
-            .then((res) => {
-              this.setState({
-                storeResult: res.data
-              });
-            })
-            .catch((err) => {
-              console.log('Failed to GET');
-            });
-        }
       }
+  }
+
+  handleAdminButtons(e, id) {
+    if (id === 'store') {
+      axios.get('/api/store')
+        .then((res) => {
+          this.setState({
+            storeResult: res.data
+          });
+        })
+        .catch((err) => {
+          console.log('Failed to GET');
+        });
+    }
+    if (id === 'users') {
+      axios.get('/api/allusers')
+        .then((res) => {
+          this.setState({
+            usersResult: res.data
+          });
+        })
+        .catch((err) => {
+          console.log('Failed to GET');
+        });
+    }
   }
 
   handleChange(e, data) {
@@ -92,8 +108,8 @@ class UserInput extends Component {
       result,
       expandActive,
       expandResult,
-      storeActive,
-      storeResult
+      storeResult,
+      usersResult
     } = this.state
     console.log(this.state);
     return (
@@ -110,22 +126,16 @@ class UserInput extends Component {
               action='Submit' placeholder='Submit'
             />
             <Button.Group basic>
-              <Button
-                toggle
-                active={expandActive}
-                id="expand"
-                onClick={(e, props) => this.handleToggle(e, props.id)}
-              >
-                Expand
-              </Button>
-              <Button
-                toggle
-                active={storeActive}
-                id="store"
-                onClick={(e, props) => this.handleToggle(e, props.id)}
-              >
-                Store
-              </Button>
+              {(this.props.user.role === 0 || this.props.user.role === 1) &&
+                <Button
+                  toggle
+                  active={expandActive}
+                  id="expand"
+                  onClick={(e, props) => this.handleToggle(e, props.id)}
+                >
+                  Expand
+                </Button>
+              }
             </Button.Group>
             <p>Currently only can take X, Y, Z, 1, 0</p>
             <p>Can not handle expression with extra brackets</p>
@@ -134,6 +144,22 @@ class UserInput extends Component {
             Invalid expression.
           </Message>
         </Segment>
+        {this.props.user.role === 0 &&
+          <div>
+            <Button
+              id="store"
+              onClick={(e, props) => this.handleAdminButtons(e, props.id)}
+            >
+              Store
+            </Button>
+            <Button
+              id="users"
+              onClick={(e, props) => this.handleAdminButtons(e, props.id)}
+            >
+              Users
+            </Button>
+          </div>
+        }
         <div>
           {result &&
             <Result result={result} title="Result" />
@@ -141,8 +167,11 @@ class UserInput extends Component {
           {expandActive && expandResult &&
             <Result result={expandResult} title="Expanded Form" />
           }
-          {storeActive && storeResult &&
+          {storeResult &&
             <Result result={JSON.stringify(storeResult)} title="Known Results" />
+          }
+          {usersResult &&
+            <UsersTable users={usersResult}/>
           }
         </div>
       </Container>
@@ -150,4 +179,12 @@ class UserInput extends Component {
   }
 }
 
-export default UserInput;
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, {})(UserInput);
+
+// export default UserInput;
