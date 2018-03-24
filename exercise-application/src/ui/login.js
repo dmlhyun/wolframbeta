@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
-import { Header, Segment, Form, Input, Button, Container } from 'semantic-ui-react';
+import { Header, Segment, Form, Input, Button, Container, Message } from 'semantic-ui-react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setToken } from './actions/index';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      password: ''
+      username: '',
+      password: '',
+      error: false
     };
   }
 
   handleSubmit() {
-    const { user, password } = this.state
-    // authentication post call
-    axios.post('/authenticate', {
-      user,
+    const { username, password } = this.state
+    axios.post('/auth', {
+      username,
       password
     })
     .then((response) => {
       console.log(response)
+      this.props.setToken(response.data.token)
     })
     .catch((error) => {
-      console.log(error)
+      this.setState({
+        error: true
+      })
     });
   }
 
   render() {
-    const { user, password } = this.state
+    const { username, password, error } = this.state
     console.log(this.state);
     return (
       <Container>
@@ -39,8 +44,8 @@ class Login extends Component {
               <Input
                 label='Username' placeholder='username'
                 fluid
-                value={user}
-                onChange={(e, { value }) => this.setState({ user: value })}
+                value={username}
+                onChange={(e, { value }) => this.setState({ username: value })}
               />
             </Form.Field>
             <Form.Field>
@@ -59,10 +64,17 @@ class Login extends Component {
               Login
             </Button>
           </Form>
+          <Message negative hidden={!error}>
+            Invalid Username or Password.
+          </Message>
         </Segment>
       </Container>
     );
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {}
+}
+
+export default connect(mapStateToProps, { setToken })(Login);

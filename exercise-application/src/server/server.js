@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const app = express();
-const {db_conn, Users}= require('./db.connection.js');
 
 const passport = require('passport');  
 const strategy = require('passport-local');
@@ -10,57 +9,44 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const cryptoJs = require('crypto-js');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 
 const utilities = require('../common/utilities.js');
+const {db_conn, Users}= require('./db.connection.js');
 
 const serverSecret = crypto.createDiffieHellman(60).generateKeys('base64');
-var authenticate = expressJwt({ secret: serverSecret });
+const authenticate = expressJwt({ secret: serverSecret });
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(cookieParser());
+
 
 //=========================================================================================//
 //                                       Authentication
 //=========================================================================================//
 
-
-// purpose: uses passport-local strategy to handle username/password authentication
-passport.use(new strategy( 
+passport.use(new strategy(
   function(username, password, done) {
-    // (1) replace the following with data retrieved from database
-    // (2) ensure that password is not handled as plaintext
-    console.log('fadjshf;asdf')
-    if(username === 'admin' && password === 'password'){ 
-      done(null, { // stub call to a database; returning fixed info
-        id: 42, fname: 'bob', lname: 'no-name'
-      });
-    }
-    else {
-      done(null, false);
-    }
+    console.log(username, password)
+
+    Users.findOne({ where: { Name: username} }).then(user => {
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (password !== user.hash) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
   }
 ));
 
-// passport.use(new strategy(
-//   function(username, password, done) {
-//     User.findOne({ username: username }, (err, user) => {
-//       if (err) { return done(err); }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect username.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
-
-// POST requests for '/authenticate' path
-app.post('/authenticate', passport.authenticate(
+// POST request for '/authenticate' path
+app.post('/auth', passport.authenticate(
   'local', {
     session: false
-  }), serializeUser, generateToken, returnToken);
+  }), generateToken, returnToken);
 
 // purpose: generates a token based on provided user.id; token is set to expire based on expiresIn value
 function generateToken(req, res, next) {
@@ -73,34 +59,13 @@ function generateToken(req, res, next) {
 }
 
 // purpose: return generated token to caller
-function returnToken(req, res) {  
+function returnToken(req, res) {
+  res.cookie('auth_token', req.token); 
   res.status(200).json({
     user: req.user,
     token: req.token
   });
 }
-
-// purpose: update or create user data in database and only return user.id
-function serializeUser(req, res, next) {
-  console.log('serializeUser');
-  db.updateOrCreate(req.user, function(err, user){
-    if(err) {return next(err);}
-      req.user = {
-        id: user.id,
-        fname: user.fname,
-        lanme: user.lname
-      };
-      next();
-  });
-  next();
-}
-
-var db = {  
-  updateOrCreate: function(user, cb){
-    cb(null, user);
-  }
-};
-
 
 
 //=========================================================================================//

@@ -11,6 +11,7 @@ class Result extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('nextProps', nextProps)
     this.setState({
       result: nextProps.result
     });
